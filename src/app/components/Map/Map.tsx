@@ -1,47 +1,45 @@
 'use client';
-import React from 'react';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import React, { useEffect, useState } from 'react';
+import { GoogleMap } from '@react-google-maps/api';
+import useAirQualityMapOverlay from '../../hooks/useAirQualityMapOverlay';
+import useGoogleMapsApi from '@/utils/loadGoogleMapsApi';
 
 const containerStyle = {
   width: '100%',
   height: '100%',
 };
 
-const center = {
-  lat: 51.505,
-  lng: -0.09,
-};
+interface MapProps {
+  centerProps: { lat: number; lng: number };
+  onLoad?: (map: google.maps.Map) => void;
+}
 
-const Map: React.FC = () => {
+const Map: React.FC<MapProps> = ({ centerProps, onLoad }) => {
+  const { isLoaded } = useGoogleMapsApi();
+  const handleMapLoad = useAirQualityMapOverlay({ onLoad });
+  const [center, setCenter] = useState<{ lat: number; lng: number } | null>(null);
+
+  // Atualiza o centro do mapa dinamicamente
+  useEffect(() => {
+    if (centerProps) {
+      setCenter(centerProps);
+    }
+  }, [centerProps]);
+
   if (typeof window === 'undefined') {
     return null;
   }
 
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyB0uHS64wZD9SnG4f1i70VJnWPC5LlB2Eo',
-  });
-
-  const onLoad = (map: google.maps.Map) => {
-    const waqiMapOverlay = new google.maps.ImageMapType({
-      getTileUrl: (coord: { x: any; y: any; }, zoom: any) => {
-        return `https://tiles.aqicn.org/tiles/usepa-aqi/${zoom}/${coord.x}/${coord.y}.png?token=569bf5fc46a085608ddbae5fa188b86080993c70`;
-      },
-      name: "Air Quality",
-    });
-    map.overlayMapTypes.insertAt(0, waqiMapOverlay);
-  };
-
-  return isLoaded ? (
+  return isLoaded && centerProps ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={center}
+      center={center} // Agora usa centerProps diretamente
       zoom={11}
-      onLoad={onLoad}
-    >
-    </GoogleMap>
-  ) : <></>;
+      onLoad={handleMapLoad}
+    />
+  ) : (
+    <p>Loading map...</p>
+  );
 };
 
-export default React.memo(Map); 
-
+export default React.memo(Map);

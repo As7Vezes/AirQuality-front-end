@@ -1,8 +1,8 @@
 import React from 'react';
-import '../styles/tailwind.css';
-import Sidebar from '../components/Sidebar/Sidebar';
-import Header from '../components/Header/Header';
-import Geolocation from '../components/Geolocation/Geolocation';
+import './tailwind.css';
+import Sidebar from './components/Sidebar/Sidebar';
+import Header from './components/Header/Header';
+import Geolocation from './components/Geolocation/Geolocation';
 
 const Home: React.FC = () => {
   return (

@@ -39,7 +39,7 @@ const Geolocation: React.FC<MapProps> = ({ onLoad }) => {
         </div>
 
         {/* Conteúdo "olá mundo" */}
-       <WeaherComponent />
+        {center && <WeaherComponent local={center}/>}
       </div>
 
       <div className="h-96">

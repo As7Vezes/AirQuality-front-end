@@ -46,8 +46,6 @@ const Search: React.FC<SearchProps> = ({ setCenter }) => {
         return;
       }
 
-      console.log("Coordenadas obtidas: ", newCenter);
-
       setCenter(newCenter);
     }
   };
@@ -64,12 +62,12 @@ const Search: React.FC<SearchProps> = ({ setCenter }) => {
     <div className="flex flex-col space-y-4">
       {isLoaded ? (
         <>
-          <div className="flex">
+          <div className="flex md:justify-center w-full">
             <input
               type="text"
               ref={placeAutoCompleteRef}
               placeholder="Digite um local"
-              className="border p-2 flex-grow"
+              className="w-[300px] border p-2"
             />
             <button onClick={handlePlaceChanged} className="p-2 bg-blue-500 text-white">
               🔍

@@ -4,7 +4,7 @@ import Search from '../Search/Search';
 import Map from '../Map/Map';
 import useCurrentLocation from '@/app/hooks/useCurrentLocation';
 import useAirQualityMapOverlay from '@/app/hooks/useAirQualityMapOverlay';
-import WeaherComponent from '../weatherComponent/WeatherComponent';
+import WeatherComponent from '../weatherComponent/WeatherComponent';
 
 interface MapProps {
   onLoad?: (map: google.maps.Map) => void;
@@ -21,33 +21,47 @@ const Geolocation: React.FC<MapProps> = ({ onLoad }) => {
         lat: location.latitude,
         lng: location.longitude,
       });
+      console.log('Localização atual:', location);
     }
   }, [location]);
 
+  useEffect(() => {
+    if (center) {
+      console.log("Center atualizado:", center);
+    }
+  }, [center]);
+
   return (
     <div className="flex-1 p-4">
-      <div className="flex bg-white p-4 rounded-lg shadow mb-4">
-        {/* Conteúdo principal */}
-        <div className="flex-grow p-2">
-          <h2 className="text-xl font-bold mb-2">Geolocation</h2>
-          <p>Did you know that you can setup geo-tags? (auto updating tags based on geolocation range)</p>
-          <p>Auto-geolocation has not been configured.</p>
-          <button className="text-blue-600">Click here to configure</button>
-          <div className="flex items-center mt-4">
+      {/* Grid responsivo */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4 p-4 rounded-lg shadow mb-4 bg-white items-center lg:items-start text-center lg:text-left">
+
+
+        {/* Bloco com texto e busca */}
+        <div className="flex flex-col items-center lg:items-start">
+          <h1 className="text-2xl font-bold text-gray-800">🌍 Geolocalização e Monitoramento</h1>
+          <p className="text-gray-600 my-3 max-w-[600px]">
+            🔍 Busque por um endereço ou localização para visualizar dados de qualidade do ar e condições meteorológicas
+          </p>
+          <div className="flex justify-center mt-4">
             <Search setCenter={setCenter} />
           </div>
         </div>
 
-        {/* Conteúdo "olá mundo" */}
-        {center && <WeaherComponent local={center}/>}
+
+        {/* WeatherComponent ao lado em telas grandes, abaixo em telas pequenas */}
+        {center && (
+          <div className="w-full flex justify-center lg:justify-end mt-4 lg:mt-0">
+            <WeatherComponent local={center} />
+          </div>
+        )}
       </div>
 
+      {/* Mapa */}
       <div className="h-96">
         {center ? <Map centerProps={center} onLoad={handleMapLoad} /> : <p>Loading map...</p>}
       </div>
     </div>
-
-
   );
 };
 

@@ -1,13 +1,12 @@
 'use client';
 
 import SidebarItem from './SidebarItem';
-import { MapPin, Star, PlusCircle, X } from 'lucide-react';
-import { FC } from 'react';
+import { Star, PlusCircle } from 'lucide-react';
 
 
-const Sidebar: FC<SidebarProps> = () => {
+const Sidebar = () => {
   return (
-    <aside className="w-64 max-w-full bg-gray-900 text-white p-6 flex flex-col h-full">
+    <aside className="w-64 bg-gray-900 text-white p-6 flex flex-col min-h-screen">
 
       <h2 className="text-xl font-semibold mb-6 flex justify-center text-center">Configurações</h2>
 

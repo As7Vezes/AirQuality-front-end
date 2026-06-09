@@ -31,6 +31,8 @@ const Geolocation: React.FC<MapProps> = ({ onLoad }) => {
     }
   }, [center]);
 
+  
+
   return (
     <div className="flex-1 p-4">
       {/* Grid responsivo */}
